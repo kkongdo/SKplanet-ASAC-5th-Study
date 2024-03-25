@@ -1,0 +1,134 @@
+
+# 자바스크립트 정의 및 사용
+
+* 실행 컨텍스트(Execution Context)
+	- 코드가 실행될 때 제공할 환경 정보들들 모아둔 객체(변수나 함수에 대한 정보를 가지고 있음)
+	- 자바스크립트는 실행 컨텍스트를 CAll Stack에 쌓아 올린 후 실행하여 코드의 환경과 순서를 보장한다.
+	- Stack형식으로 실행 컨텍스트가 쌓인다.
+	
+* 자바스크립트의 실행 컨텍스트가 쌓이는 방식
+	- 자바스크립트 코드 실행시 Global Context(전역 실행 컨텍스트)가 CallStack에 쌓임
+	- 함수가 실행될 경우 해당 함수의 Context가 CallStack에 쌓임
+	- 함수 종료 시 Context가 사라짐
+	- 모든 코드가 종료되면 Global Context도 사라짐
+ 
+ ```javascript 
+ //대표 예시
+ //---------(1)
+ var text = 'hello';
+ function outer(){
+	function innner(){
+		console.log(test);
+		var test = 'world';
+	}
+	inner(); //--------(2)
+	console.log(test);
+ }
+ outer(); //---------(3)
+ console.log(test);
+
+ ```
+ * const. let을 사용하면 어떻게 될까?
+	- const.let으로 선언시에는 선언만 할 뿐 초기화 하지 않음
+	- TDZ 발생
+	
+---------
+	
+* This
+ - 함수가 실행될 때 함수 내부에서 사용되는 값
+ - 함수의 객체 취급을 받는 누구를 지칭하는 것인지 알려주는 것
+ - 함수를 호출한 컨텍스트를 가리킨다.
+ 
+ var a = 1;
+ console.log(a); // 1
+ console.log(this.a); // 1 
+ 
+ * Func this
+  - this는 부르는 상황마다 다르게 동작.
+  - new 바인딩 > 암시적 바인딩 > 명시적 바인딩 > 기본 바인딩
+  
+* 기본 바인딩
+ - 함수 단독 호출시에는 Global Binding이다.
+ 
+ // 단독 호출 Global Execution Context
+ function test(){
+	console.log(this);
+ }
+ test();
+ 
+* 암시적 바인딩
+ - 객체에 메서드로 호출 될 때
+ - Object Binding
+ 
+ ```javascript
+  const obj = {
+	name : "Kim",
+	getName(){
+		return this.name;
+	}
+  }
+  console.log(obj.getName());
+  ```
+  
+* 명시적 바인딩
+ - apply/call
+   - 함수 호출시 첫번째 인자로 this로 사용할 객체를 전달.
+   - 두 방식은 동작 방식은 동일, 인수 전달의 차이
+   
+   ```javascript
+	function introduce(name, interest){
+		console.log('Hello My name is ${name} and I like ${interest},');
+	}
+	const user = {
+		name : 'Alice',
+		interest : 'Javascript'
+	};
+	//call 사용
+	introduce.call(user, user.name, user.interest);
+	
+	// apply 사용
+	introduce.apply(user,[user.name, user.interest]);
+   
+   ```
+ - bind
+   - 첫번쨰 인자값으로 전달된 객체에 this를 고정한 새로운 함수를 반환.
+   
+   ```javascript
+   function greet(){
+		console.log('Hi, I am ${this.name}.');
+   }
+   const user = {
+		name : 'Bob'
+   }
+   const userGreet = greet.bind(user);
+   userGreet();
+   ```
+   
+ - new 바인딩
+   - 생성자 함수를 사용하여 새로운 객체를 생성시 발생하는 형태
+   - 새 생성한 객체에 자동으로 bind
+  
+  ```javascript
+  function Person(name, age){
+	this.name = name;
+	this.age = age;
+  }	
+  const alice = new Person('Alice', 30);
+  console.log(alice) // Person {name : 'Alice', age : 30}
+  ```
+  
+우선순위
+
+Func this
+ - this는 부르는 상황마다 다르게 동작.
+ - new 바인딩 > 암시적 바인딩 > 명시적 바인딩 > 기본 바인딩
+ 
+기본 바인딩
+ - 함수 단독 호출 시에는 Global Binding
+ 
+ //단독 호출 Global Execution Context
+ function test(){
+	console.log(this):
+ }
+ test();
+ ------------------------------------------
