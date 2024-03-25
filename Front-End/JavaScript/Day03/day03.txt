@@ -19,7 +19,7 @@
  function outer(){
 	function innner(){
 		console.log(test);
-		var test = 'world';
+		var text = 'world';
 	}
 	inner(); //--------(2)
 	console.log(test);
@@ -35,7 +35,7 @@
 ---------
 	
 * This
- - 함수가 실행될 때 함수 내부에서 사용되는 값
+ - 함수가 실행될 때 함수 내부에서 사용되는 값  
  - 함수의 객체 취급을 받는 누구를 지칭하는 것인지 알려주는 것
  - 함수를 호출한 컨텍스트를 가리킨다.
  
@@ -132,3 +132,292 @@ Func this
  }
  test();
  ------------------------------------------
+ 
+* 객체란?(Object)
+
+- 원시타입(숫자, 문자열, boolean, null, undefined, Symbol)을 제외한 나머지 값들.
+- key와 value로 구성된 property(속성)의 집합.
+- object는 key와 value의 쌍으로 이루어진 container이다.
+
+Property
+
+```javascript
+	//객체 정의
+	var person = {
+		firstName : "John", // firstName 프로퍼티
+		lastName : "Doe", // lastName 프로퍼티
+		age : 30 // age 프로퍼티
+	};
+	console.log(person.firstName);
+	console.log(person.lastName);
+	console.lastName(person.age);
+```
+- 객체(object)안에 속한 변수 또는 값
+- 
+
+Method
+
+```javascript
+	var person = {
+		firstName : "John", // firstName 프로퍼티
+		lastName : "Doe", // lastName 프로퍼티
+		fullName : function(){ // fullName 프로퍼티에 함수 할당
+			return this.firstName + " " + this.lastName; // this 키워드
+		}
+	};
+	//객체의 메서드 호출
+	console.log(person.fullName()); // "John Doe" 출력
+```
+
+자바스크립트의 객체 생성 방법
+	- 객체 리터럴
+	- 생성자 함수가
+	- 클래스
+	
+* 객체 리터럴
+	-가장 직관적인 방식은
+	- {}를 사용해 객체를 만들고, property와 method를 정의
+
+const person = {
+	name : "John Doe",
+	age : 30,
+	greet : function(){
+		console.log("hello my name is ' + this.name + '!');
+	}
+}
+
+person.greet();
+
+* 생성자 함수
+ - new 키워드 사용
+ - 객체를 여러번 생성해야 할 때 유용
+ 
+ ```javascript
+ function Person(name, age) {
+	this.name : name,
+	this.age : age,
+	this.greet : function(){
+		console.log("hello my name is ' + this.name + '!');
+	};
+}
+const person1 = new Person('John Doe' , 30);
+const person2 = new Person('Jahn Doe' , 25);
+
+person1.greet();
+person2.greet();
+ 
+ ```
+ 
+* 클래스 사용(자동차 설계서와 같은 문서의 역할)
+
+ - ES6+ 클래스 기반 문법 사용
+ - class 키워드 사용 정의 이후 new 키워드로 생성
+ 
+ ```javascript
+ class Person{
+	constructor(name, age){
+		this.name = name;
+		this.age = age;
+	}
+	greet(){
+		console.log("Helo my name is' + this.name + '!');
+	}
+ }
+ 
+ const peron = new Person('john doe', 30);
+ person.greet(); // 출력 : Hello, my name is John Doe!!
+ ```
+ 
+ 클래스를 사용하는 이유 : 기능을 확장할 수 있는 상속의 개념을 가지며, 유지보수성이 증가함.
+ 
+ 접근제한자를 private로 만들어주고싶으면 propery에 #을 붙여주면 된다.(#name)
+ 
+ 
+ 리터럴 vs 클래스 vs 
+ 
+ ***
+ 
+ 
+ * Object 내에서 메서드 표현
+	- Object 내부에서 사용하는 Function은 Method로 부름
+    - Object의 property value
+	
+	
+* 리터럴 생성시 선언하기(Default)
+
+```javascript
+	const myObject = {
+		property : 'value',
+		myMethod : function(){
+			console.log('This is a method.';
+		}
+	};
+	myObject.myMethod(); //출력 This is a method.
+```
+
+* Es6 축약 메서드 표현법(shorten)
+```javascript
+	const myObject = {
+		property : 'value',
+		myMethod() {
+			console.log('This is a method using ES6 Shorthand..');
+		}
+	};
+	myObject.myMethod(); // 출력 : This is a method using ES6 Shorthand..
+```
+
+* Function  동적 추가
+
+```javascript
+	const myObject = {
+		property : 'value',
+	};
+	myObject.anotherMethod = function(){
+		console.log('This is another method');
+	};
+	myObject.anotherMethod(); // 출력 : This is another method.
+```
+
+* getter/setter, private 변수
+	- 외부 스코프에서 내부 스코프의 변수에 접근하지 못하도록 함
+	- 데이터의 안전한 관리 목적
+	- 잘못된 참조 차단
+	- 클래스 데이터를 함부로 못건드리게 하기 위해서 사용한다.(=클래스의 정확성을 훼손하지 않도록 한다.)
+	
+	```javascript
+		class Person{
+			#name; // private 필드 선언
+			constructor(name){
+				this.#name = name;
+			}
+			
+			//getter
+			getName(){
+				return this.#name;
+			}
+			
+			//setter
+			setName(name){
+				this.#name = name;
+			}
+		}
+		const peron = new Person('John');
+		person.name = 'Park'; //private 변수에 반영되지 않음
+		console.log(person.getName()); // John
+		person.setName('Jane');
+		console.log(peron.getName()); // Jane
+	```
+ 
+ 
+ ----------------------------------------------
+ 모듈이란?
+ 
+ * 모듈 Module
+ 
+ - 재사용 가능한 코드 조각
+ - 코드를 분리해 작고 관리하기 쉬운 파일로 구분
+ - 모듈은 자체적인 스코프를 가져 코드와 네임스페이스 충돌을 막음
+ - 모듈 사용법은 크게 ESM, CJS 방식으로 나뉨
+ - 라이브러리 : 모듈화된 코드의 모음, 프레임워크 : 
+ 프레임워크와 라이브러리의 차이점은 제어권과 관련되어 있다.
+ 라이브러리는 우리가 부르고 싶을 떄 부를 수 있지만 프레임워크는 코드가 알아서 만든 코드를 실행하는 것의 차이점이 있다.
+ 
+ ```javascript
+	// name.js
+	export const myName = 'Kim';
+	export const  getMyFullName = () => }
+		return 'Kim Full'
+	}
+```
+
+```javascript	
+	// otherName.js
+	const myName = 'Park';
+	const getMyFullName = () => {
+		return 'Park Full';
+	}
+	export { myName, getMyFullName};	
+```
+
+```javascript
+import {myName, getMyFullName} from './name.js';
+import * as otherName from './otherName,js'
+
+
+const name = myName;
+const fullName = otherName.getMyFullName();
+
+console.log(name); // 'kim'
+console.log(fullName); // 'Park Full'
+```
+------------------------
+
+ESM(ECMAScript)Modules
+- 프로튼엔드 영역에서 표준화 되어 널리 쓰이는 방식으로
+
+
+모듈 시스템은 어떤 것을 사용해야 할까?
+- 프로젝트의 요구 사항, 개발 환경을 고려
+
+
+Nmaed Export/Import
+- 여러 값을 내보낼 때 각각의 고유한 이름으로 내보내기 사용되는
+- 하나의 모듈에서 여러 함수, 변수, 클래스 등을 내보내기 할때 사용
+
+
+Default Export/Import
+- 모듈당 하나의 값을 내보낼 때 사용
+- 모듈 전체가 하나의 클래스가 될 떄 사용
+
+
+
+Tree-shaking
+
+- 사용되지 않는 코드를 제거하는 행위
+- ESm 을 사용할 경우 효과적으로 작동
+- 브라우저 성능에 매우 중요한 단계
+
+
+모듈 시스템은 어떤 것을 사용해야 할까?
+- 프로젝트의 요규 사항, 개발 환경을 고려
+
+CommonJS(CJS)
+- 백엔드 개발
+- Node.js를 활용한 SSR개발시 사용
+- 기존 node.js프로젝트를 사용하거나 라이브러리를 사용해야 하는 경우
+
+ES Module(EMS)
+- 최신 웹 개발 환경
+- 최적화가 필요한 환경(Tree-shaking, Code splitting, Dynamic Imports - Lazy Loading)
+
+SSR : 서버에서 완성된 HTML을 클라이언트에 던지는 것을 의미하며, 빠르게 동작된다. 요청이 온 순간 페이지를 만듦. 
+CSR : 대표적인 라이브러리 리액트
+
+SSR or CSR  : HTML을 빈상태로 넘기느냐 완성된 상태로 넘기느냐의 차이점이 있다.
+
+리액트의 문제점 : 빈 HTML을 만든다. 동일한 페이지에 빈 페이지를 계쏙 만든다. 검색에 불편함이 있다. 대표적인 예) 블로그 목록 페이지
+메인페이지는 SSR
+ 
+SSG(Genrator) : 빌드 시점에 페이지를 만들어 버림.
+
+ISG : 일정시간마다 페이지를 새롭게 만듦 
+
+--------------------------------------------------------
+
+
+오늘의 정리
+
+
+1. 실행 컨텍스트
+
+2. this
+
+3. object
+	리터럴, new, class
+	
+4. module
+	CJS, EMS
+	
+	
+암시적 바인딩에 대한 자세한 설명, apply(), call() 메서드 속도차이
+
