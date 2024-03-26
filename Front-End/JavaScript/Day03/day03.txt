@@ -233,7 +233,7 @@ person2.greet();
  접근제한자를 private로 만들어주고싶으면 propery에 #을 붙여주면 된다.(#name)
  
  
- 리터럴 vs 클래스 vs 
+ 리터럴 vs 클래스 vs 생성자
  
  ***
  
