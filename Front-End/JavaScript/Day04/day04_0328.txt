@@ -226,5 +226,7 @@ fetch()
 * Promise.race()
  - 
 
+
+문법적 설탕이며 Generator
 Promise()를 잠시 멈출 수 있는 방법인
 Generator까지 공부를 해야 한다.
